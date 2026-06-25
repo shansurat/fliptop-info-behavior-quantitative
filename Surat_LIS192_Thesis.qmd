@@ -235,6 +235,33 @@ survey_data <- raw_data %>%
     Q14 = as.numeric(Q14),
     Q25 = as.numeric(Q25)
   )
+
+# Prepare data specifically for likert plots
+likert_data <- raw_data %>%
+  select(Q09:Q25) %>%
+  mutate(across(Q09:Q21, ~ factor(., levels = 1:5, labels = c("Never", "Rarely", "Sometimes", "Often", "Always")))) %>%
+  mutate(across(Q22:Q25, ~ factor(., levels = 1:5, labels = c("Strongly Disagree", "Disagree", "Neutral", "Agree", "Strongly Agree")))) %>%
+  as.data.frame()
+
+names(likert_data) <- c(
+  "Q09: Pause to research slang",
+  "Q10: Open multiple tabs",
+  "Q11: Search for external translations",
+  "Q12: Research visual props/costumes",
+  "Q13: Skim comment section",
+  "Q14: Rewind after reading explanation",
+  "Q15: Rewind multi-participant battles",
+  "Q16: Watch reaction/breakdown videos",
+  "Q17: Use Facebook to validate",
+  "Q18: Use Reddit to validate",
+  "Q19: Post questions on social media",
+  "Q20: Read explanations by peers",
+  "Q21: Verify lore via third-party",
+  "Q22: Comment section is helpful",
+  "Q23: External sources bridge gaps",
+  "Q24: Reaction videos improve comprehension",
+  "Q25: Info-seeking improves understanding"
+)
 ```
 
 ## Descriptive Statistics
@@ -297,6 +324,32 @@ ggplot(survey_data, aes(x = Frequency)) +
   scale_y_continuous(expand = expansion(mult = c(0, 0.15))) +
   theme_minimal() +
   labs(title = "Viewing Frequency", x = "Frequency", y = "Count")
+```
+
+## Information Behavior Visualization
+
+The online survey measured information behavior across three constructs utilizing a 5-point Likert scale. Figure 6 visualizes the frequency of core information behavior patterns.
+
+```{r likert_plot1, fig.height=4, fig.width=8, fig.cap="Figure 6. Information Behavior Patterns"}
+plot(likert(likert_data[, 1:7]), wrap=30) + 
+  ggtitle("Information Behavior Patterns") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Figure 7 visualizes the audience's reliance on secondary media and social collaboration to resolve information gaps.
+
+```{r likert_plot2, fig.height=4, fig.width=8, fig.cap="Figure 7. Secondary Media & Social Collaboration"}
+plot(likert(likert_data[, 8:13]), wrap=30) + 
+  ggtitle("Secondary Media & Social Collaboration") +
+  theme(plot.title = element_text(hjust = 0.5))
+```
+
+Figure 8 visualizes the perceived effectiveness of these strategies in bridging information gaps and improving comprehension.
+
+```{r likert_plot3, fig.height=3.5, fig.width=8, fig.cap="Figure 8. Comprehension & Information Gap Bridging"}
+plot(likert(likert_data[, 14:17]), wrap=30) + 
+  ggtitle("Comprehension & Information Gap Bridging") +
+  theme(plot.title = element_text(hjust = 0.5))
 ```
 
 ## Hypothesis Testing
