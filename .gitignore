@@ -1,0 +1,23 @@
+# Quarto & LaTeX intermediate files
+.quarto/
+*.tex
+*.log
+*.aux
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*knit.md
+*.utf8.md
+*_files/
+
+# Note: *.pdf is explicitly NOT ignored to allow tracking the final thesis PDF
+
+# R environment files
+.Rhistory
+.RData
+.Ruserdata
+.Rproj.user/
+
+# macOS specific
+.DS_Store
